@@ -7,12 +7,12 @@ import logging
 
 import matplotlib.pyplot as plt
 
-# Load pre-trained model tokenizer (vocabulary)
-tokenizer = BertTokenizer.from_pretrained('bert-base-uncased')
-# Load pre-trained model (weights)
-model = BertModel.from_pretrained('bert-base-uncased',
-                                  output_hidden_states = True, # Whether the model returns all hidden-states.
-                                  )
+# # Load pre-trained model tokenizer (vocabulary)
+# tokenizer = BertTokenizer.from_pretrained('bert-base-uncased')
+# # Load pre-trained model (weights)
+# model = BertModel.from_pretrained('bert-base-uncased',
+#                                   output_hidden_states = True, # Whether the model returns all hidden-states.
+#                                   )
 
 def generate_sentence_embeddings(model, tokenizer, sentence):
 
@@ -59,5 +59,3 @@ def generate_sentence_embeddings(model, tokenizer, sentence):
 
     sentence_embedding = torch.mean(token_vecs_cat,dim=0)
     return sentence_embedding
-
-generate_sentence_embeddings(model,tokenizer,"I crossed the river bank.")
