@@ -1,9 +1,10 @@
 from typing import List, Optional
 
 from fastapi import FastAPI
-from pydantic import BaseModel
+from pydantic import BaseModel, Field
 
 import numpy as np
+import os
 
 import torch
 from transformers import BertTokenizer, BertModel
@@ -18,9 +19,29 @@ import logging
 import matplotlib.pyplot as plt
 from baas import generate_sentence_embeddings
 
+import pymongo
+
 load_dotenv()  # take environment variables from .env.
+mongodb_key = os.getenv('mongodb_key')
+
+client = pymongo.MongoClient(mongodb_key)
+db = client.Vidsum
+
 
 app = FastAPI()
+
+class SummarySchema(BaseModel):
+    article: str = Field(...)
+    order: List[int] = Field(...)
+
+    class Config:
+        schema_extra = {
+            "example": {
+                "article":"This is a sample string",
+                "order":[0] 
+            }
+        }
+
 
 class Article(BaseModel):
     article: str
@@ -51,5 +72,7 @@ async def summary(article:Article):
     article = clean(article['article'])
     ordering = gen_summary(article)
     print(ordering)
-
+    sdata ={'article':article,'order':ordering}
+    response = await db["summaries"].insert_one(sdata)
+    print(response)
     return -1
