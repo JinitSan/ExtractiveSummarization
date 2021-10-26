@@ -45,7 +45,7 @@ def gen_summary(sentences):
     print(vectors.shape)
     end = time.time()
     print(end-start)
-    n_clusters = int(np.ceil(len(vectors)/4))
+    n_clusters = int(np.ceil(len(vectors)/8))
     kmeans = KMeans(n_clusters=n_clusters, random_state=0)
     kmeans = kmeans.fit(vectors)
     avg = []
@@ -54,12 +54,29 @@ def gen_summary(sentences):
         idx = np.where(kmeans.labels_ == j)[0]
         avg.append(np.mean(idx))
     closest, _ = pairwise_distances_argmin_min(kmeans.cluster_centers_,vectors)
-    ordering = sorted(range(n_clusters), key=lambda k: avg[k])
-    summary = '.'.join([sentences[closest[idx]] for idx in ordering])
+    clustering_ordering = sorted(range(n_clusters), key=lambda k: avg[k])
+    ordering = [closest[idx].item() for idx in clustering_ordering]
+    n_ordering =[]
+    for i in ordering:
+        if i!=0 and i!=len(sentences)-1:
+            n_ordering.append(i-1)
+            n_ordering.append(i)
+            n_ordering.append(i+1)
+        if i==0:
+            n_ordering.append(i)
+            n_ordering.append(i+1)
+        if i == len(sentences)-1:
+            n_ordering.append(i-1)
+            n_ordering.append(i)
+    n_ordering=set(n_ordering)
+    print(n_ordering)
+    print(len(sentences))
+    ordering = list(n_ordering)
+    summary = '.'.join([sentences[idx] for idx in ordering])
     print('Clustering Finished')
     print(summary)
     return ordering        
-
+"""
 if __name__=="__main__":
 
     start = time.time()
@@ -95,5 +112,5 @@ if __name__=="__main__":
         print('Clustering Finished')
         print(summary)
 
-
+"""
 

@@ -1,57 +1,21 @@
-from typing import List, Optional
-
-from fastapi import FastAPI
-from pydantic import BaseModel, Field
-
+from fastapi import FastAPI, status ,HTTPException
 import numpy as np
-import os
-
-import torch
 from transformers import BertTokenizer, BertModel
-
-from dotenv import load_dotenv
-
+from fastapi.responses import JSONResponse
+from bson.objectid import ObjectId
 from clustering import gen_summary, clean
+from models.summary import Article
+from schemas.summary import summaryEntity
 # OPTIONAL: if you want to have more information on what's happening, activate the logger as follows
 import logging
 #logging.basicConfig(level=logging.INFO)
-
 import matplotlib.pyplot as plt
 from baas import generate_sentence_embeddings
-
-import pymongo
-
-load_dotenv()  # take environment variables from .env.
-mongodb_key = os.getenv('mongodb_key')
-
-client = pymongo.MongoClient(mongodb_key)
-db = client.Vidsum
+from config.db import conn
+db = conn.Vidsum
 
 
 app = FastAPI()
-
-class SummarySchema(BaseModel):
-    article: str = Field(...)
-    order: List[int] = Field(...)
-
-    class Config:
-        schema_extra = {
-            "example": {
-                "article":"This is a sample string",
-                "order":[0] 
-            }
-        }
-
-
-class Article(BaseModel):
-    article: str
-
-class Index(BaseModel):
-    index: str
-
-class SentenceEmbedding(BaseModel):
-    sentence_embedding: List[int]
-
 # @app.get("/embedding/")
 # async def get_embeddings(sentence:str,response_body=SentenceEmbedding):
 #     # Load pre-trained model tokenizer (vocabulary)
@@ -71,8 +35,19 @@ async def summary(article:Article):
     print(article)
     article = clean(article['article'])
     ordering = gen_summary(article)
-    print(ordering)
-    sdata ={'article':article,'order':ordering}
-    response = await db["summaries"].insert_one(sdata)
-    print(response)
-    return -1
+    item={'article':article,'order':ordering}
+    response =  db.Article.insert_one(summaryEntity(item))
+    item['id']= str(response.inserted_id)
+    summary=[]
+    article=article.split(".")
+    for index in ordering:
+            summary.append(article[index])
+    item['summ']="".join(summary)
+    print(item['order'])
+    return JSONResponse(status_code=status.HTTP_201_CREATED, content=item['id'])
+
+@app.get('/result/{id}',response_description="Retrieves the summary", response_model=str)
+async def result(id:str):
+   if( article := db.Article.find_one({"_id": ObjectId(id)}) ) is not None:
+        return '.'.join([article['article'].split('.')[i] for i in article['order']])
+   raise HTTPException(status_code=404, detail=f"Article {id} not found")
