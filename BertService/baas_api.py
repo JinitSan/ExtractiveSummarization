@@ -6,6 +6,7 @@ from bson.objectid import ObjectId
 from clustering import gen_summary, clean
 from models.summary import Article
 from schemas.summary import summaryEntity
+from fastapi.middleware.cors import CORSMiddleware
 # OPTIONAL: if you want to have more information on what's happening, activate the logger as follows
 import logging
 #logging.basicConfig(level=logging.INFO)
@@ -16,6 +17,17 @@ db = conn.Vidsum
 
 
 app = FastAPI()
+origins = [
+    "http://localhost:3000",
+]
+
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=origins,
+    allow_credentials=True,
+    allow_methods=["*"],
+    allow_headers=["*"],
+)
 # @app.get("/embedding/")
 # async def get_embeddings(sentence:str,response_body=SentenceEmbedding):
 #     # Load pre-trained model tokenizer (vocabulary)
