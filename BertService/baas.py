@@ -1,3 +1,4 @@
+from os import truncate
 import torch
 import transformers
 from transformers import BertTokenizer
@@ -17,7 +18,7 @@ import matplotlib.pyplot as plt
 def get_encodings_attention(sentence):
     tokenizer = BertTokenizer.from_pretrained('bert-base-uncased')
     print(transformers.__version__)
-    encoding= lambda sentence:tokenizer.encode(sentence,truncation=True,add_special_tokens=True)
+    encoding= lambda sentence:tokenizer.encode(sentence,add_special_tokens=True,truncation=True)
     sent_enc=[]
     for sent in sentence:
         sent_enc.append(encoding(sent))
