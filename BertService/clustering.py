@@ -12,15 +12,16 @@ from transformers import BertTokenizer, BertModel
 def req(sentence):
     #body = requests.get("http://localhost:8000/embedding/",params={'sentence': sentence})
     #return body.json()["sentence_embedding"]
-     # Load pre-trained model tokenizer (vocabulary)
-    print(sentence)
-    tokenizer = BertTokenizer.from_pretrained('bert-base-uncased')
+     # Load pre-trained model tokenizer (vocabulary)    
     # Load pre-trained model (weights)
+    print(sentence)
     model = BertModel.from_pretrained('bert-base-uncased',
                                     output_hidden_states = True, # Whether the model returns all hidden-states.
                                     )
-    sentence_embedding = generate_sentence_embeddings(model,tokenizer,sentence)
-    sentence_embedding = {"sentence_embedding":sentence_embedding.tolist()}
+    sentence_embedding = generate_sentence_embeddings(model,sentence)
+    #print(sentence_embedding)
+    sentence_embedding = {"sentence_embedding":sentence_embedding}
+    #print(sentence_embedding['sentence_embedding'].shape)
     return sentence_embedding['sentence_embedding']
 
 def clean(sentences):
@@ -31,17 +32,21 @@ def clean(sentences):
 def gen_summary(sentences):
     start = time.time()
     sentences = sentences.split(".")
-    sentences = [token for token in sentences if token!='']
+    sentences = [token.strip() for token in sentences if token!='']
     i = 0
-    rem = len(sentences)%4
-    vectors = []
+    #rem = len(sentences)%4
+    #vectors = []
+    sentence_embed=req(sentences)
+    print(sentence_embed)
+    '''
     if rem!=0:
         with Pool(rem) as p:
             vectors.extend(p.map(req,sentences[0:rem]))
     for i in range(rem,len(sentences),4):
         with Pool(4) as p:
             vectors.extend(p.map(req, sentences[i:i+4]))
-    vectors = np.array(vectors)
+    '''
+    vectors = np.array(sentence_embed)
     print(vectors.shape)
     end = time.time()
     print(end-start)
