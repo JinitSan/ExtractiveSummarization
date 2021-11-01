@@ -3,6 +3,21 @@ import {Container, Row, Col, FloatingLabel, Form, Button} from "react-bootstrap"
 
 const buttonStyle = {
     marginTop:"20px",
+    backgroundColor:"#FFFFFF"
+}
+
+const TextAreaStyle = {
+    width:'400px', 
+    height: '300px',
+    borderWidth: "2px",
+    backgroundColor:"#FFFFFF",
+    fontSize:"16px",
+    color:"#000000"
+}
+
+const labelStyle = {
+    color:"#000000",
+    fontSize:"20px"
 }
 
 const TextBoxes = () => {
@@ -30,13 +45,13 @@ const TextBoxes = () => {
         <Container className="center">
             <Row className="g-2">
                 <Col md>
-                    <FloatingLabel controlId="floatingInputGrid" label="Article">
-                            <Form.Control as="textarea" placeholder="Enter article" style={{ width:'400px', height: '300px' }} value={article} placeholder="Enter Article" onChange={(e)=>setArticle(e.target.value)}/>    
+                    <FloatingLabel controlId="floatingInputGrid" label="Article" style={labelStyle}>
+                            <Form.Control as="textarea" placeholder="Enter article" style={TextAreaStyle} value={article} placeholder="Enter Article" onChange={(e)=>setArticle(e.target.value)}/>    
                     </FloatingLabel>
                 </Col>
                 <Col md>
-                    <FloatingLabel controlId="floatingSelectGrid" label="Summary">
-                        <Form.Control as="textarea" placeholder="Summary" style={{ width:'400px', height: '300px' }} value={sum} placeholder="Summary"/>    
+                    <FloatingLabel controlId="floatingSelectGrid" label="Summary" style={labelStyle}>
+                        <Form.Control as="textarea" placeholder="Summary" style={TextAreaStyle} value={sum} placeholder="Summary"/>    
                     </FloatingLabel>
                     <Button variant="primary" size="md" type="submit" onClick={onSubmit} style={buttonStyle}>Generate Summary</Button>
                 </Col>
