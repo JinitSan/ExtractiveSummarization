@@ -3,11 +3,11 @@ import Particles from "react-tsparticles";
 
 const BackgroundEffect = () => {
     return (
-    <Particles id="tsparticles" options={{ background: {
+    <Particles id="tsparticles" options={{  background: {
         color: {
-            value: "#CEE5D0",
+          value: "#fffff",
         },
-        },
+      },
         fpsLimit: 60,
         interactivity: {
         events: {

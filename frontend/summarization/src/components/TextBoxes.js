@@ -1,11 +1,6 @@
 import React,{useState,useEffect} from 'react'
 import {Container, Row, Col, FloatingLabel, Form, Button} from "react-bootstrap"
 
-const buttonStyle = {
-    marginTop:"20px",
-    backgroundColor:"#FFFFFF"
-}
-
 const TextAreaStyle = {
     width:'400px', 
     height: '300px',
@@ -53,9 +48,11 @@ const TextBoxes = () => {
                     <FloatingLabel controlId="floatingSelectGrid" label="Summary" style={labelStyle}>
                         <Form.Control as="textarea" placeholder="Summary" style={TextAreaStyle} value={sum} placeholder="Summary"/>    
                     </FloatingLabel>
-                    <Button variant="primary" size="md" type="submit" onClick={onSubmit} style={buttonStyle}>Generate Summary</Button>
+    
+                <Button variant="danger" size="md" type="submit" onClick={onSubmit}>Generate Summary</Button>
                 </Col>
-            </Row>    
+            </Row> 
+           
         </Container>
     );
 }
