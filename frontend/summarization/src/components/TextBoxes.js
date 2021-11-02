@@ -1,6 +1,6 @@
 import React,{useState,useEffect} from 'react'
-import {Container, Row, Col, FloatingLabel, Form, Button} from "react-bootstrap"
-
+import {Container, Row, Col, FloatingLabel, Form} from "react-bootstrap"
+import Button from "../styles/GlobalComponents/Button"
 const TextAreaStyle = {
     width:'400px', 
     height: '300px',
@@ -10,8 +10,22 @@ const TextAreaStyle = {
     color:"#000000"
 }
 
+const Heading = {
+    position: "absolute",
+    top: "20%",
+    left:"590px",
+    fontSize:"40px",
+    color:"white",
+    fontFamily:''
+
+}
 const labelStyle = {
     color:"#000000",
+    fontSize:"20px"
+}
+const rowclass = {
+    position: "absolute",
+    top: "75%",
     fontSize:"20px"
 }
 
@@ -38,21 +52,23 @@ const TextBoxes = () => {
     }
     return (
         <Container className="center">
-            <Row className="g-2">
+            <Row><h1 style={Heading}>Content Summarization</h1>
+            </Row>
+            <Row >
                 <Col md>
                     <FloatingLabel controlId="floatingInputGrid" label="Article" style={labelStyle}>
                             <Form.Control as="textarea" placeholder="Enter article" style={TextAreaStyle} value={article} placeholder="Enter Article" onChange={(e)=>setArticle(e.target.value)}/>    
                     </FloatingLabel>
-                </Col>
+                </Col> 
                 <Col md>
                     <FloatingLabel controlId="floatingSelectGrid" label="Summary" style={labelStyle}>
                         <Form.Control as="textarea" placeholder="Summary" style={TextAreaStyle} value={sum} placeholder="Summary"/>    
                     </FloatingLabel>
-    
-                <Button variant="danger" size="md" type="submit" onClick={onSubmit}>Generate Summary</Button>
                 </Col>
             </Row> 
-           
+            <Row style={rowclass}>
+                <Button  size="md" type="submit" onClick={onSubmit}>Generate Summary</Button>
+            </Row>
         </Container>
     );
 }

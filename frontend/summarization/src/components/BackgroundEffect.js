@@ -5,10 +5,10 @@ const BackgroundEffect = () => {
     return (
     <Particles id="tsparticles" options={{  background: {
         color: {
-          value: "#fffff",
+          value: "#000000",
         },
       },
-        fpsLimit: 60,
+        fpsLimit: 50,
         interactivity: {
         events: {
             onClick: {
