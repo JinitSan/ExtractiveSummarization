@@ -5,7 +5,7 @@ const BackgroundEffect = () => {
     return (
     <Particles id="tsparticles" options={{  background: {
         color: {
-          value: "#000000",
+          value: "#A2D2FF",
         },
       },
         fpsLimit: 50,
