@@ -24,8 +24,8 @@ jobs:
 
       - name: Create and start virtual environment
         run: |
-          pip install pipenv
-          pipenv shell
+          python -m ./venv env
+          source env/bin/activate
           cd BertService
       
       - name: Install dependencies
