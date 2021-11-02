@@ -26,11 +26,13 @@ jobs:
         run: |
           python -m ./venv env
           source env/bin/activate
+          ls
+          pwd
           cd BertService/
       
       - name: Install dependencies
         run: |
-          pipenv install
+          pip install
           pip install transformers==4.5.1
         
 
