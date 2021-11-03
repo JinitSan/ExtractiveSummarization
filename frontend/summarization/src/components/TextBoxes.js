@@ -4,21 +4,25 @@ import Button from "../styles/GlobalComponents/Button"
 import { H, Section } from "react-headings";
 
 const TextAreaStyle = {
-    width:'400px', 
+    
     height: '300px',
     borderWidth: "2px",
     backgroundColor:"#FFFFFF",
     fontSize:"16px",
     color:"#000000"
+   
 }
 
 const Heading = {
-    position: "absolute",
-    top: "25%",
-    left:"690px",
+    position: "relative",
+    top: "0%",
+    left:"150px",
     fontSize:"40px",
     color:"white",
-    fontFamily:''
+    padding:"20px",
+    margin: "0 auto",
+    marginBottom: '10px',
+   
 
 }
 const labelStyle = {
@@ -26,12 +30,14 @@ const labelStyle = {
     fontSize:"20px"
 }
 const rowclass = {
-    position: "absolute",
-    fontSize:"20px",
-    top:"68%",
-    marginTop:"20px"
+    marginTop: '30px'
 }
-
+const colclass= {
+    float: 'left',
+    position:'relative',
+    width: '50%',
+    margin: '5px'
+}
 const TextBoxes = () => {
     const [article,setArticle]=useState('')
     const [sum,setSum]=useState('')
@@ -55,26 +61,27 @@ const TextBoxes = () => {
     }
     return (
         <Container className="center" fluid>
-            <Row md={12} xs={12}>
+         <div >
                 <H style={Heading}>Content Summarization</H>
-            </Row>
+            
             <Row >
-                <Col md={6} xs={12}>
+                <Col md={6} xs={12} style={colclass}>
                     <FloatingLabel controlId="floatingInputGrid" label="Article" style={labelStyle}>
                             <Form.Control as="textarea" placeholder="Enter article" style={TextAreaStyle} value={article} placeholder="Enter Article" onChange={(e)=>setArticle(e.target.value)}/>    
                     </FloatingLabel>
                 </Col> 
-                <Col md={6} xs={12}>
+                <Col md={6} xs={12} style={colclass}>
                     <FloatingLabel controlId="floatingSelectGrid" label="Summary" style={labelStyle}>
                         <Form.Control as="textarea" placeholder="Summary" style={TextAreaStyle} value={sum} placeholder="Summary"/>    
                     </FloatingLabel>
                 </Col>
+                <Row style={rowclass}>
+               
+                    <Button    size="md" type="submit" onClick={onSubmit}>Generate Summary</Button>
+                
+                 </Row>
             </Row> 
-            <Row style={rowclass}>
-                <Col md={12} xs={12}>
-                    <Button  size="md" type="submit" onClick={onSubmit}>Generate Summary</Button>
-                </Col>
-            </Row>
+     </div>  
         </Container>
     );
 }
